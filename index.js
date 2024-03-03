@@ -4,6 +4,7 @@ import { createServer } from "http"
 import cors from "cors"
 const app = express()
 const server = createServer(app)
+
 const io = new Server(server, {
     cors: {
         origin: "https://patric-chat.vercel.app",
@@ -12,7 +13,7 @@ const io = new Server(server, {
     }
 })
 app.get("/", (req, res) => {
-    res.send("home2")
+    res.send("home")
 })
 
 app.use(cors({
@@ -21,6 +22,7 @@ app.use(cors({
     credentials: true
 }))
 let sockets = []
+
 io.on("connection", (socket) => { //server create // here connection is an event on this event a callback is executed 
 //    console.log(socket.id);
     socket.on("usersent" , (username)=>{
@@ -29,7 +31,7 @@ io.on("connection", (socket) => { //server create // here connection is an event
         socket.broadcast.emit("otheruserhasjoined" , `${username} has just joined the chat`)
     })
     socket.on("message", (data) => {
-        io.emit("recieve-message", { msg: data.msg, id: socket.id, name: data.name })
+        io.emit("recieve-message", { msg: data.msg, id: socket.id, name: data.name ,img:data.img})
     })
     socket.on("disconnect", () => {
         socket.broadcast.emit("disconnect-message", `${sockets[socket.id]} left the chat`)
