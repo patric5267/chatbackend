@@ -6,7 +6,7 @@ const app = express()
 const server = createServer(app)
 const io = new Server(server, {
     cors: {
-        origin: "http://127.0.0.1:5173",
+        origin: "https://patric-chat.vercel.app",
         methods: ["GET", "POST"],
         credentials: true
     }
@@ -16,7 +16,7 @@ app.get("/", (req, res) => {
 })
 
 app.use(cors({
-    origin: "http://127.0.0.1:5173",
+    origin: "https://patric-chat.vercel.app",
     methods: ["GET", "POST"],
     credentials: true
 }))
