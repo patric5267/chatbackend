@@ -12,7 +12,7 @@ const io = new Server(server, {
     }
 })
 app.get("/", (req, res) => {
-    res.send("home")
+    res.send("home2")
 })
 
 app.use(cors({
