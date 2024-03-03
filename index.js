@@ -6,7 +6,7 @@ const app = express()
 const server = createServer(app)
 const io = new Server(server, {
     cors: {
-        origin: "https://patric-chat.vercel.app",
+        origin: "http://127.0.0.1:5173",
         methods: ["GET", "POST"],
         credentials: true
     }
@@ -16,24 +16,24 @@ app.get("/", (req, res) => {
 })
 
 app.use(cors({
-    origin: "https://patric-chat.vercel.app",
+    origin: "http://127.0.0.1:5173",
     methods: ["GET", "POST"],
     credentials: true
 }))
 let sockets = []
 io.on("connection", (socket) => { //server create // here connection is an event on this event a callback is executed 
-    socket.on("usersent", (user) => {
-        sockets[socket.id] = user
-        socket.emit("welcome", `Welcome to the chat ${user}`)
-        socket.broadcast.emit("userjoined", `${user} has joined the chat`)
+//    console.log(socket.id);
+    socket.on("usersent" , (username)=>{
+        sockets[socket.id]=username
+        socket.emit("welcome" , `Welcome to the chat , ${username}`)
+        socket.broadcast.emit("otheruserhasjoined" , `${username} has just joined the chat`)
     })
     socket.on("message", (data) => {
-        io.emit("recieve-message", { msg: data.msg, id: socket.id, name: data.name , img:data.img})
+        io.emit("recieve-message", { msg: data.msg, id: socket.id, name: data.name })
     })
     socket.on("disconnect", () => {
         socket.broadcast.emit("disconnect-message", `${sockets[socket.id]} left the chat`)
     })
-
 })
 server.listen(5000, () => {
     console.log("Server started on port 5000");
